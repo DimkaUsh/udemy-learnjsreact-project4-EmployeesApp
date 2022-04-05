@@ -5,7 +5,7 @@ const SearchPanel = () => {
         <input 
             type="text" 
             className='form-control search-input'
-            placeHolder='Найти сотрудника' />
+            placeholder='Найти сотрудника' />
     )
 }
 
