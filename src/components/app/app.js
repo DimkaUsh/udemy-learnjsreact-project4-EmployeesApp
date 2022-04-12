@@ -15,10 +15,10 @@ class App extends Component {
 
         this.state = {
             data : [
-                {name: 'John S.', salary: 1000, increase: true, id: 1},
-                {name: 'Alex M.', salary: 800, increase: false, id: 2},
-                {name: 'Carl D.', salary: 1850, increase: false, id: 3},
-            ],            
+                {name: 'John S.', salary: 1000, increase: true, like: true, id: 1},
+                {name: 'Alex M.', salary: 800, increase: false, like: false, id: 2},
+                {name: 'Carl D.', salary: 1850, increase: false, like: false, id: 3},
+            ],
         }
     }
 
@@ -46,7 +46,7 @@ class App extends Component {
                 }
             }
 
-            const newItem = {'name': name, 'salary': salary, 'increase': false, 'id': index}
+            const newItem = {'name': name, 'salary': salary, 'increase': false, like: false, 'id': index}
 
             return {
                 data: data.concat(newItem)
@@ -54,6 +54,33 @@ class App extends Component {
         })
 
         console.log(1)
+    }
+
+    onToggleIncrease = (id) => {
+        this.setState(({data}) => ({
+            
+            data: data.map(item => {
+                if (item.id === id) {
+                    return {...item, increase: !item.increase}
+                }
+                return item
+            })
+
+        }))
+    }
+
+    onToggleLike = (id) => {
+        this.setState(({data}) => ({
+            
+            data: data.map(item => {
+                if (item.id === id) {
+                    return {...item, like: !item.like}
+                }
+                return item
+            })
+
+        }))
+        
     }
 
     render () {
@@ -71,9 +98,10 @@ class App extends Component {
     
                 <EmployeesList 
                 data={data}
-                onDelete={this.deleteItem}/>
+                onDelete={this.deleteItem}
+                onToggleIncrease={this.onToggleIncrease}
+                onToggleLike={this.onToggleLike}/>
                 <EmployeesAddForm
-                data={data}
                 onAdd={this.addItem}/>
             </div>
         )
