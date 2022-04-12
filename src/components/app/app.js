@@ -19,6 +19,9 @@ class App extends Component {
                 {name: 'Alex M.', salary: 800, increase: false, like: false, id: 2},
                 {name: 'Carl D.', salary: 1850, increase: false, like: false, id: 3},
             ],
+
+            numberEmployees: 3,
+            numberOfLike: 1,
         }
     }
 
@@ -28,6 +31,7 @@ class App extends Component {
                 data : data.filter(item => item.id !== id)
             }
         })
+        this.changeNumberEmploeers()
     }
 
     addItem = (name, salary) => {
@@ -52,44 +56,58 @@ class App extends Component {
                 data: data.concat(newItem)
             }
         })
-
-        console.log(1)
+        this.changeNumberEmploeers()
     }
 
-    onToggleIncrease = (id) => {
+    onToggleIncrease = id => {
         this.setState(({data}) => ({
-            
             data: data.map(item => {
                 if (item.id === id) {
                     return {...item, increase: !item.increase}
                 }
                 return item
             })
-
         }))
     }
 
-    onToggleLike = (id) => {
+    onToggleLike = id => {
         this.setState(({data}) => ({
-            
             data: data.map(item => {
                 if (item.id === id) {
                     return {...item, like: !item.like}
                 }
                 return item
             })
-
         }))
-        
+        this.numberOfLikes()
+    }
+
+    changeNumberEmploeers = () => {
+        this.setState(({data}) => {
+            return {numberEmployees: data.length}
+        })
+    }
+
+    numberOfLikes = () => {
+        this.setState(({data}) => {
+            let count = 0;
+            data.forEach(item => {
+                if (item.like === true) {count++}
+            })
+            return {numberOfLike: count}
+        })
     }
 
     render () {
 
-        const {data} = this.state
+        const {data, numberEmployees, numberOfLike} = this.state
 
         return (
             <div className='app'>
-                <AppInfo/>
+                <AppInfo 
+                numberEmployees={numberEmployees}
+                numberOfLike={numberOfLike}
+                />
     
                 <div className='search-panel'>
                     <SearchPanel/>
