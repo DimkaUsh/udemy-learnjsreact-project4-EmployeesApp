@@ -10,8 +10,8 @@ const EmployeesList = ({data, onDelete, onToggleIncrease, onToggleLike}) => {
             key={id} 
             {...itemProps}
             onDelete={() => onDelete(id)}
-            onToggleIncrease={() => onToggleIncrease(id)}
-            onToggleLike={() => onToggleLike(id)}/>    
+            onToggleIncrease={() => onToggleIncrease(id, 'increase')}
+            onToggleLike={() => onToggleLike(id, 'like')}/>    
         )
     });
     return (

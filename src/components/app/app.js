@@ -19,9 +19,6 @@ class App extends Component {
                 {name: 'Alex M.', salary: 800, increase: false, like: false, id: 2},
                 {name: 'Carl D.', salary: 1850, increase: false, like: false, id: 3},
             ],
-
-            numberEmployees: 3,
-            numberOfLike: 1,
         }
     }
 
@@ -31,7 +28,6 @@ class App extends Component {
                 data : data.filter(item => item.id !== id)
             }
         })
-        this.changeNumberEmploeers()
     }
 
     addItem = (name, salary) => {
@@ -56,57 +52,31 @@ class App extends Component {
                 data: data.concat(newItem)
             }
         })
-        this.changeNumberEmploeers()
     }
 
-    onToggleIncrease = id => {
+    onToggleProp = (id, prop) => {
         this.setState(({data}) => ({
             data: data.map(item => {
                 if (item.id === id) {
-                    return {...item, increase: !item.increase}
+                    return {...item, [prop]: !item[prop]}
                 }
                 return item
             })
         }))
-    }
-
-    onToggleLike = id => {
-        this.setState(({data}) => ({
-            data: data.map(item => {
-                if (item.id === id) {
-                    return {...item, like: !item.like}
-                }
-                return item
-            })
-        }))
-        this.numberOfLikes()
-    }
-
-    changeNumberEmploeers = () => {
-        this.setState(({data}) => {
-            return {numberEmployees: data.length}
-        })
-    }
-
-    numberOfLikes = () => {
-        this.setState(({data}) => {
-            let count = 0;
-            data.forEach(item => {
-                if (item.like === true) {count++}
-            })
-            return {numberOfLike: count}
-        })
     }
 
     render () {
 
-        const {data, numberEmployees, numberOfLike} = this.state
+        const {data} = this.state
+
+        const emploeers = data.length;
+        const increase = data.filter(item => item.increase === true).length
 
         return (
             <div className='app'>
                 <AppInfo 
-                numberEmployees={numberEmployees}
-                numberOfLike={numberOfLike}
+                emploeers={emploeers}
+                increase={increase}
                 />
     
                 <div className='search-panel'>
@@ -117,8 +87,8 @@ class App extends Component {
                 <EmployeesList 
                 data={data}
                 onDelete={this.deleteItem}
-                onToggleIncrease={this.onToggleIncrease}
-                onToggleLike={this.onToggleLike}/>
+                onToggleIncrease={this.onToggleProp}
+                onToggleLike={this.onToggleProp}/>
                 <EmployeesAddForm
                 onAdd={this.addItem}/>
             </div>
