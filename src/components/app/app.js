@@ -24,12 +24,36 @@ class App extends Component {
 
     deleteItem = id => {
         this.setState(({data}) => {
-            // const index = data.findIndex(elem => elem.id === id);
-
             return {
                 data : data.filter(item => item.id !== id)
             }
         })
+    }
+
+    addItem = (name, salary) => {
+
+        this.setState(({data}) => {
+
+            let index = null;
+            for (let i=0; ;i++){
+                if (data[i] === undefined){
+                    index = i+1
+                    break
+                }
+                if (data[i].id !== i + 1) {
+                    index = i+1
+                    break
+                }
+            }
+
+            const newItem = {'name': name, 'salary': salary, 'increase': false, 'id': index}
+
+            return {
+                data: data.concat(newItem)
+            }
+        })
+
+        console.log(1)
     }
 
     render () {
@@ -48,7 +72,9 @@ class App extends Component {
                 <EmployeesList 
                 data={data}
                 onDelete={this.deleteItem}/>
-                <EmployeesAddForm/>
+                <EmployeesAddForm
+                data={data}
+                onAdd={this.addItem}/>
             </div>
         )
     }
