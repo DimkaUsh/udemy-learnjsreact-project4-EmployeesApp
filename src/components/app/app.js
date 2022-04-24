@@ -19,6 +19,8 @@ class App extends Component {
                 {name: 'Alex M.', salary: 800, increase: false, like: false, id: 2},
                 {name: 'Carl D.', salary: 1850, increase: false, like: false, id: 3},
             ],
+            term: '',
+            filter: 'all',
         }
     }
 
@@ -65,12 +67,46 @@ class App extends Component {
         }))
     }
 
+    searchEmp = (items, term) => {
+        if (term.length === 0) {
+            return items;
+        }
+
+        return items.filter(item => {
+            return item.name.indexOf(term) > -1
+        })
+    }
+
+    onUpdateSearch = (term) => {
+        this.setState({term})
+    }
+
+    filterData = (items, filter) => {
+        if (filter === 'all') {return items};
+        if (filter === 'likes') {
+            return items.filter(item => {
+                return item.like === true
+            })
+        }
+        if (filter === 'more1000') {
+            return items.filter(item => {
+                return item.salary > 1000
+            })
+        }
+    }
+
+    onUpdateLikes = (filter) => {
+        this.setState({filter})
+    }
+
     render () {
 
-        const {data} = this.state
+        const {data, term, filter} = this.state
 
         const emploeers = data.length;
         const increase = data.filter(item => item.increase === true).length
+
+        const visibleData = this.filterData(this.searchEmp(data, term), filter);
 
         return (
             <div className='app'>
@@ -80,12 +116,12 @@ class App extends Component {
                 />
     
                 <div className='search-panel'>
-                    <SearchPanel/>
-                    <AppFilter/>
+                    <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
+                    <AppFilter onUpdateLikes={this.onUpdateLikes}/>
                 </div>
     
                 <EmployeesList 
-                data={data}
+                data={visibleData}
                 onDelete={this.deleteItem}
                 onToggleIncrease={this.onToggleProp}
                 onToggleLike={this.onToggleProp}/>

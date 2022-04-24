@@ -42,7 +42,9 @@ class EmployeesAddForm extends Component {
                         onClick={
                             (e) => {
                                 e.preventDefault();
-                                onAdd(name, salary)
+                                if (name !== '' && salary !== ''){
+                                    onAdd(name, salary)
+                                }
                             }
                             }>Добавить</button>
             </form>
